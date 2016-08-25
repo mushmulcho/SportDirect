@@ -31,23 +31,25 @@ var other = 8;
 
 // 	document.getElementById('content').appendChild(a);
 // })();
+window.onload = function() {
+	(function(){
 
-(function(){
+		//creating input field for new player
+		// $("#content").append("<h2>Creating New Character</h2>"+
+		// 	"<input placeholder='Character Name' id='characterName'></input>"+
+		// 	"<input placeholder='Gold' id='gold'></input>");
+		// $("#content").append("<button class='btn btn-success' id='newPlayer'>New Character</button>");
+		//$("#content").append("<br><input placeholder='Delete Character' id='deletePlayer'></input><button class='btn btn-danger' id='delete'>Delete Character</button>");
+		
+		$("#content").append("<br>Доставка:<input id='transport' value='20' disabled>&euro;</input>");
+		$("#content").append("<br>Общо Лева:<input id='end' value='"+cardBGN+" BGN'  disabled></input>");
+		$("#content").append("<br>Други:<input id='other' value='"+other+" BGN'  disabled></input>");
+		deletePlayer();
+		newPlayer();
+		addPlayers($("#content"));
+	})();
+};
 
-	//creating input field for new player
-	// $("#content").append("<h2>Creating New Character</h2>"+
-	// 	"<input placeholder='Character Name' id='characterName'></input>"+
-	// 	"<input placeholder='Gold' id='gold'></input>");
-	// $("#content").append("<button class='btn btn-success' id='newPlayer'>New Character</button>");
-	//$("#content").append("<br><input placeholder='Delete Character' id='deletePlayer'></input><button class='btn btn-danger' id='delete'>Delete Character</button>");
-	
-	$("#content").append("<br>Доставка:<input id='transport' value='20' disabled>&euro;</input>");
-	$("#content").append("<br>Общо Лева:<input id='end' value='"+cardBGN+" BGN'  disabled></input>");
-	$("#content").append("<br>Други:<input id='other' value='"+other+" BGN'  disabled></input>");
-	deletePlayer();
-	newPlayer();
-	addPlayers($("#content"));
-})();
 function addPlayers(body){
 	if($(".fullHouse")) $(".fullHouse").remove();
 	body.after("<div class='fullHouse'></div>");
