@@ -1,6 +1,9 @@
 var playerNames = [];
-var cardBGN = 523.35;
+var moneyTakenFromCardBGN = 523.35;
 var other = 8;
+var allSum = 0;
+var EUR = 1.98;
+var euro = true;
 (function createLocalStorageFiles(){
 	var JSONfile = {"Даката":{"name":"Даката","gold":62.72333333333335,"items":{"Salomon XR Shift Mens Trail Running Shoes":["Salomon XR Shift Mens Trail Running Shoes","30"],"Gelert Dustpan+Brush 63":["Gelert Dustpan+Brush 63","1.8"],"Gelert Camper Deluxe Self Inflating Mat":["Gelert Camper Deluxe Self Inflating Mat","18"],"Karrimor Xlite Tee Sn71 Black Large":["Karrimor Xlite Tee Sn71 Black Large","9.59"]}},"Дели":{"name":"Дели","gold":41.72333333333334,"items":{"Ocean Pacific Pacific All Over Print Beach Tunic Ladies":["Ocean Pacific Pacific All Over Print Beach Tunic Ladies","7.19"],"Miss F 7 Pk Tr Liner Ld61 Black Ladies":["Miss F 7 Pk Tr Liner Ld61 Black Ladies","3"],"Slaz 5PK Crew Sk Wb Sn63 Dark/Multi":["Slaz 5PK Crew Sk Wb Sn63 Dark/Multi","1.8"],"Miss Fiori Stripe 4Pk":["Miss Fiori Stripe 4Pk","2.4"],"Slaz Plain Polo Snr 62 Charcoal":["Slaz Plain Polo Snr 62 Charcoal","5.1"],"Slaz Plain Polo Snr 62 Yellow":["Slaz Plain Polo Snr 62 Yellow","5.1"],"Gelert Camper Full Mat 64 Blue":["Gelert Camper Full Mat 64 Blue","13.8"]}},"Сашо":{"name":"Сашо","gold":67.81333333333332,"items":{"Firetrap 3 Pack Formal Socks Mens":["Firetrap 3 Pack Formal Socks Mens","6.3"],"Airwalk Metalhead Skateboarding Shoes Mens":["Airwalk Metalhead Skateboarding Shoes Mens","16.79"],"Character Sgl Boxer Snr63 Star Wars":["Character Sgl Boxer Snr63 Star Wars","3"],"Character Sgl Boxer Snr63 Kermit":["Character Sgl Boxer Snr63 Kermit","3.6"],"No Fear Tailslide Mens Trainers":["No Fear Tailslide Mens Trainers","17.99"],"Gelert Ottawa Low Mens Walking Shoes":["Gelert Ottawa Low Mens Walking Shoes","16.8"]}},"Гу":{"name":"Гу","gold":38.12333333333334,"items":{"Karrimor Duma Trail Mens Running Shoes":["Karrimor Duma Trail Mens Running Shoes","27.59"],"Slazenger 5 Pack Trainer Socks X2":["Slazenger 5 Pack Trainer Socks X2","7.2"]}},"Мунч":{"name":"Мунч","gold":21.933333333333334,"items":{"Gelert Camper Self Inflating Mat":["Gelert Camper Self Inflating Mat","13.8"],"SoulCal Web Stripe Mens Belt":["SoulCal Web Stripe Mens Belt","4.8"]}},"Митко":{"name":"Митко","gold":30.923333333333336,"items":{"Lee Cooper Crafted Joggers Mens":["Lee Cooper Crafted Joggers Mens","5.99"],"Adidas Volzo Short SnC99 White/Night":["Adidas Volzo Short SnC99 White/Night","7.2"],"UEFA Germany CoreTee Sn63 White":["UEFA Germany CoreTee Sn63 White","4.8"],"Adidas Santos Sock 00 White/Black":["Adidas Santos Sock 00 White/Black","4.8"]," Adidas Santos Sock 00 Black/White M ":[" Adidas Santos Sock 00 Black/White M ","4.8"]}}};
 	if(JSONfile){
@@ -42,30 +45,42 @@ window.onload = function() {
 		//$("#content").append("<br><input placeholder='Delete Character' id='deletePlayer'></input><button class='btn btn-danger' id='delete'>Delete Character</button>");
 		
 		$("#content").append("<br>Доставка:<input id='transport' value='20' disabled>&euro;</input>");
-		$("#content").append("<br>Общо Лева:<input id='end' value='"+cardBGN+" BGN'  disabled></input>");
+		$("#content").append("<br>Общо Лева:<input id='end' value='"+moneyTakenFromCardBGN+" BGN'  disabled></input>");
 		$("#content").append("<br>Други:<input id='other' value='"+other+" BGN'  disabled></input>");
+		$("#content").append("<button class='btn btn-success' id='convert'>Convert To BGN/EUR</button>");
+		$("#convert").click(function(){
+			if(euro) euro = false;
+			else euro = true;
+			addPlayers($("#content"));
+		});
 		deletePlayer();
 		newPlayer();
 		addPlayers($("#content"));
 	})();
 };
-
+function convert(sum,toEuro){
+	if(toEuro)return parseInt(sum).toFixed(2);
+	else return +(+sum * EUR).toFixed(2);
+	
+}
 function addPlayers(body){
 	if($(".fullHouse")) $(".fullHouse").remove();
 	body.after("<div class='fullHouse'></div>");
 	for (var i = 0; i < playerNames.length; i++) {
 		var player = JSON.parse(localStorage.getItem(playerNames[i]));
-		$(".fullHouse").append("<table class="+player.name+"><tr><th>"+player.name+"</th><td id='gold'>"+player.gold+"</td></tr></table>");
+		$(".fullHouse").append("<table class="+player.name+"><tr><th>"+player.name+"</th><td id='gold'>"+convert(player.gold,euro)+"</td></tr></table>");
 		// Enable Adding new items
 		//$("."+player.name+" tr th").click(addItem);
 		if(player.items)
 			for(var key in player.items){
 				// Add this to "td" RemoveItems : onclick='removeItem(this)'
-				$("."+player.name).append("<tr><td >"+player.items[key][0]+"</td><td>"+player.items[key][1]+"</td></tr>");				
+				$("."+player.name).append("<tr><td >"+player.items[key][0]+"</td><td>"+convert(player.items[key][1],euro)+"</td></tr>");				
 			}
 		console.log(JSON.parse(localStorage.getItem(""+playerNames[i])));
 		body.append();
+		allSum+=convert(player.gold);
 	}
+	console.log(allSum);//TODO
 	
 }
 function addItem(){
@@ -107,7 +122,7 @@ function updateGold(name,sum,add){
 	else{
 		endGold = +endGold -(+sum) ;
 	}
-	$("."+name+" #gold")[0].innerHTML = endGold;
+	$("."+name+" #gold")[0].innerHTML = endGold.toFixed(2);
 }
 function removeItem(that){
 	var name = that.offsetParent.className;
