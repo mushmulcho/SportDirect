@@ -1,0 +1,41 @@
+body {
+    background-color: silver;
+}
+table{
+    float: left;
+    margin:10px;
+    width: 400px;
+}
+input {
+    width :110px;
+    height : 30px;
+    margin: 5px 5px;
+    font-size: 16px;
+    border-radius: 6px;
+}
+tr, td {
+    color: #fff;
+    border: 1px solid #eee;
+    padding: 8px 15px;
+    border-collapse: collapse;
+  }
+tr {
+    background: #00CC00;
+    color: black;
+    font-size: 12px;
+}
+.text{
+    width: 100px;
+    float: left;
+}
+#content{
+    font:18px Comic Sans MS;
+}
+.fullHouse{
+    margin-top: 40px;
+    background-color: grey;
+    text-align: center;
+}
+#gold{
+    color: gold;
+}
